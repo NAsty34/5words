@@ -21,29 +21,33 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setFixedSize(400, 600)
+        self.setFixedSize(400, 650)
         self.setWindowTitle("My App")
 
         layout = QGridLayout()
         # layout.setStyleSheet('background: black; color: white;')
         self.letters = []
         self.word = self.GenerateWord()
-        self.button1 = QPushButton(self.word)
+        # self.button1 = QPushButton(self.word)
         self.button2 = QPushButton("Проверить")
+        self.button2.setStyleSheet('background: orange; color: black; font-size: 25px')
+        self.button2.setMaximumSize(400, 40)
+
         self.x = 0
         self.y = 0
-        self.button1.clicked.connect(self.OnChangeWord)
+        # self.button1.clicked.connect(self.OnChangeWord)
         self.button2.clicked.connect(self.onCheck)
 
-        layout.addWidget(self.button1, 0, 5, 2, 2)
+        # layout.addWidget(self.button1, 0, 5, 2, 2)
 
         for i in range(1, 7):
             self.letters.append([])
             for j in range(1, 6):
                 te = QTextEdit()
-                te.setStyleSheet('font-size: 50px;padding:0;')
-                te.setMaximumSize(50, 50)
-                # te.setV
+
+                te.setStyleSheet('font-size: 50px;padding: 5;')
+                te.setMaximumSize(60, 90)
+
                 te.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
                 te.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
                 # te.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -51,7 +55,7 @@ class MainWindow(QMainWindow):
                 self.letters[i - 1].append(te)
                 layout.addWidget(te, i + 1, j + 1)
 
-        layout.addWidget(self.button2, 8, 3, 4, 3)
+        layout.addWidget(self.button2, 8, 2, 5, 5)
         widget = QWidget()
         widget.setStyleSheet('background: black; color: white;')
         widget.setLayout(layout)
@@ -70,7 +74,7 @@ class MainWindow(QMainWindow):
         if self.x > 4 or e.key() < 1040 or e.key() > 1071:
             return
 
-        self.letters[self.y][self.x].setText(e.text())
+        self.letters[self.y][self.x].setText(e.text().upper())
         self.x += 1
 
     def onCheck(self):
@@ -81,15 +85,14 @@ class MainWindow(QMainWindow):
         for x in range(0, 5):
             let = self.letters[self.y][x]
             userlet += let.toPlainText()
-        print(userlet)
+        # print(userlet)
         f = open('words.txt', 'r', encoding="utf-8")
         exist = False
-        for line in f:
 
-            if userlet == line.strip():
+        for line in f:
+            if userlet.upper() == line.strip().upper():
                 exist = True
                 break
-
         f.close()
 
         if not exist:
@@ -105,13 +108,12 @@ class MainWindow(QMainWindow):
         for x in range(0, 5):
             let = self.letters[self.y][x]
             # print(let.toPlainText())
-
             if let.toPlainText() in self.word:
-                let.setStyleSheet(' background: white; color: black')
+                let.setStyleSheet(' background: white; color: black; font-size: 50px')
                 if self.word[x] == let.toPlainText():
-                    let.setStyleSheet(' background: #fedd2c; color: black')
+                    let.setStyleSheet(' background: #fedd2c; color: black; font-size: 50px')
             else:
-                let.setStyleSheet(' background: #5f5f5f;')
+                let.setStyleSheet(' background: #5f5f5f; font-size: 50px')
 
         self.y += 1
         self.x = 0
