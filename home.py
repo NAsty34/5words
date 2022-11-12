@@ -137,7 +137,7 @@ class MainWindow(QMainWindow):
             dlg.setWindowTitle("Lose!")
             dlg.setFixedSize(200, 100)
             dlg.setStyleSheet('font-size: 20px;')
-            message = QLabel("Не сегодня)")
+            message = QLabel("Не сегодня) \n" + self.word)
             layout.addWidget(message)
             dlg.setLayout(layout)
             dlg.exec()
@@ -151,10 +151,11 @@ class MainWindow(QMainWindow):
         for line in f:
             c += 1
             if c > x:
-                world = line.strip()
+                world = line.strip().upper()
                 break
         f.close()
         return world
+
 
     def OnChangeWord(self):
         self.word = self.GenerateWord()
